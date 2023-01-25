@@ -1,6 +1,7 @@
 from datetime import datetime
 from pytz import timezone
 
+import json
 import os
 
 
@@ -54,4 +55,11 @@ class Helpers:
         project_uuid = os.environ['PROJECT_UUID']
         is_uuid_valid = headers['Projectuuid'] == project_uuid
         is_valid_call = True if is_uuid_valid else False
+        
+        headers['Projectuuid'] = (
+            f'{headers["Projectuuid"][0:4]}'
+            '***'
+            f'{headers["Projectuuid"][-4:]}')
+
+        print(f'Call Headers: {json.dumps(headers)}')
         return is_valid_call

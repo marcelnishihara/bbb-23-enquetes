@@ -1,0 +1,15 @@
+[
+    {
+        "url_base": "https://www.uol.com.br/splash/bbb/enquetes",
+        "polls": [
+            {
+                "date": "/2023/01/23",
+                "html": "/enquete-uol-qual-dupla-deve-ir-paro-o-quarto-secreto-do-bbb-23-vote.htm"
+            },
+            {
+                "date": "/2023/01/24",
+                "html": "/enquete-uol-bbb-23-quem-voce-quer-elimina-primeiro-paredao.htm"
+            }
+        ]
+    }
+]

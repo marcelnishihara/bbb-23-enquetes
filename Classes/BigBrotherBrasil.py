@@ -59,8 +59,8 @@ class BigBrotherBrasil:
 
     def create_tweet(self) -> None:
         msg = (
-            f'A @UOL está com as seguintes parciais para a Enquete #BBB23: '
-            'Qual dupla você quer mandar para o Quarto Secreto?\n\n'
+            f'A @Splash_UOL está com as seguintes parciais para a Enquete do #BBB23 '
+            '"Quem você quer eliminar no Paredão?"\n\n'
             f'{self.partial_result[1]["housemate"]}: {self.partial_result[1]["partial"]}%\n'
             f'{self.partial_result[2]["housemate"]}: {self.partial_result[2]["partial"]}%\n'
             f'Total de Votos: {self.partial_result[0]["total"]}\n\n'

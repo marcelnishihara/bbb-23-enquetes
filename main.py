@@ -1,5 +1,8 @@
 from Classes.BigBrotherBrasil import BigBrotherBrasil
 from Classes.Helpers import Helpers
+from sources.sources import Sources
+
+import traceback
 
 
 def main(request):
@@ -14,21 +17,13 @@ def main(request):
         if is_valid_call:
             print(f'Valid Call: {is_valid_call}')
 
-            url_base = 'https://www.uol.com.br/splash/bbb/enquetes'
-
-            url_voting = [
-                {
-                    'date': '/2023/01/23',
-                    'html': '/enquete-uol-qual-dupla-deve-ir-paro-o-quarto-secreto-do-bbb-23-vote.htm'
-                }
-            ]
-
-            index = 0
-            url = f'{url_base}{url_voting[index]["date"]}{url_voting[index]["html"]}'
+            index = 1
+            sources = Sources(index=index)
+            sources.compose_splash_uol_url()
 
             bbb = BigBrotherBrasil(
-                url=url,
-                poll_number=index + 1)
+                url=sources.url,
+                poll_number=index)
 
             bbb.extract_and_transform_data()
             response = bbb.create_tweet()
@@ -38,6 +33,7 @@ def main(request):
             print(f'Unauthorized: Invalid Call')
             return ('Unauthorized', 401)
 
-    except Exception as err:
+    except Exception:
+        err = traceback.format_exc().replace('\n', ' ')
         print(f'Error: {err}')
         return ('Internal Server Error', 500)
