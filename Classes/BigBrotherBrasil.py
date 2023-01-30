@@ -23,12 +23,15 @@ class BigBrotherBrasil:
             string=get_uol_page_data.text)[0]
 
         partialResultRegex = (
-            '^<div class="partial-result">\s<span class="perc-value"\sng-bind=\".+?">'
-            '([0-9]{2,}\,[0-9]{1,})%<\/span>.+?<span class="answer-title">(.+?)<\/spa'
-            'n>.+<div class="partial-result">\s<span class="perc-value"\sng-bind=\".+'
-            '?">([0-9]{2,}\,[0-9]{1,})%<\/span>.+?<span class="answer-title">(.+?)<\/'
-            'span>.+?Total\sde\s<span class="total-votes"\sng-bind="totalVotes">([0-9'
-            ']{1,})<\/span>\svotos.+?$')
+            '^<div class=\"partial-result\">\s<span class=\"perc-value\"\sng'
+            '-bind=\".+?\">([0-9]{1,}\,[0-9]{1,})%<\/span>.+?<span class=\"a'
+            'nswer-title\">(.+?)<\/span>.+?<div class=\"partial-result\">\s<'
+            'span class=\"perc-value\"\sng-bind=\".+?\">([0-9]{1,}\,[0-9]{1,'
+            '})%<\/span>.+?<span class=\"answer-title\">(.+?)<\/span>.+?<div'
+            ' class=\"partial-result\">\s<span class=\"perc-value\"\sng-bind'
+            '=\".+?\">([0-9]{1,}\,[0-9]{1,})%<\/span>.+?<span class=\"answer'
+            '-title\">(.+?)<\/span>.+?Total\sde\s<span class="total-votes"\s'
+            'ng-bind="totalVotes">([0-9]{1,})<\/span>\svotos.+?$')
 
         partial_result = re.findall(
             pattern=partialResultRegex,
@@ -36,7 +39,8 @@ class BigBrotherBrasil:
 
         housemate_partial_one = float(partial_result[0].replace(',', '.'))
         housemate_partial_two = float(partial_result[2].replace(',', '.'))
-        total = int(partial_result[4])
+        housemate_partial_three = float(partial_result[4].replace(',', '.'))
+        total = int(partial_result[6])
 
         self.partial_result = [
             { 
@@ -52,17 +56,24 @@ class BigBrotherBrasil:
             {
                 'housemate': partial_result[3],
                 'partial': housemate_partial_two,
+                'amount': total * (housemate_partial_one / 100)
+            },
+            {
+                'housemate': partial_result[5],
+                'partial': housemate_partial_three,
                 'amount': total * (housemate_partial_two / 100)
             }
         ]
 
 
     def create_tweet(self) -> None:
+        print(f'\n\n{self.partial_result}\n\n')
         msg = (
             f'A @Splash_UOL está com as seguintes parciais para a Enquete do #BBB23 '
             '"Quem você quer eliminar no Paredão?"\n\n'
             f'{self.partial_result[1]["housemate"]}: {self.partial_result[1]["partial"]}%\n'
             f'{self.partial_result[2]["housemate"]}: {self.partial_result[2]["partial"]}%\n'
+            f'{self.partial_result[3]["housemate"]}: {self.partial_result[3]["partial"]}%\n'
             f'Total de Votos: {self.partial_result[0]["total"]}\n\n'
             f'{self.poll_number}º paredão do Big Brother Brasil 23\n'
             f'Atualizado em '

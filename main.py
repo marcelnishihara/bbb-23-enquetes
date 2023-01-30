@@ -17,7 +17,7 @@ def main(request):
         if is_valid_call:
             print(f'Valid Call: {is_valid_call}')
 
-            index = 1
+            index = 2
             sources = Sources(index=index)
             sources.compose_splash_uol_url()
 
