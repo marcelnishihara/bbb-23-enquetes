@@ -1,7 +1,6 @@
 # FOLDER
-
 __pycache__
 env
 
 # FILES
-credentials/twitter.sh
+credentials/twitter.ps1

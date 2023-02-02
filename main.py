@@ -1,11 +1,18 @@
-from Classes.BigBrotherBrasil import BigBrotherBrasil
-from Classes.Helpers import Helpers
-from sources.sources import Sources
+'''
+Module Docstring
+'''
 
 import traceback
 
+from classes.big_brother_brasil import BigBrotherBrasil
+from classes.helpers import Helpers
+from classes.sources import Sources
+
 
 def main(request):
+    '''
+    Function Docstring
+    '''
     try:
         call_headers = {}
 
@@ -30,8 +37,9 @@ def main(request):
             return (response, 200)
 
         else:
-            print(f'Unauthorized: Invalid Call')
-            return ('Unauthorized', 401)
+            msg = 'Unauthorized'
+            print(f'{msg}: Invalid Call')
+            return (msg, 401)
 
     except Exception:
         err = traceback.format_exc().replace('\n', ' ')

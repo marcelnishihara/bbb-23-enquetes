@@ -1,13 +1,21 @@
-from Classes.Helpers import Helpers
-from Classes.Twitter import Twitter
+'''
+Module BigBrotherBrasil
+'''
 
 import json
 import re
 import requests
 
+from classes.helpers import Helpers
+from classes.twitter import Twitter
+
 
 class BigBrotherBrasil:
+    '''
+    Class BigBrotherBrasil
+    '''
     def __init__(self, url: str, poll_number: int) -> None:
+        self.datetime_and_poll_info = []
         self.url = url
         self.poll_number = poll_number
         self.now = Helpers.get_datetime()
@@ -42,12 +50,13 @@ class BigBrotherBrasil:
         housemate_partial_three = float(partial_result[4].replace(',', '.'))
         total = int(partial_result[6])
 
-        self.partial_result = [
-            { 
+        self.datetime_and_poll_info.append({
                 'datetime': self.now['datetime'],
                 'total': total,
                 'poll_number': self.poll_number
-            },
+        })
+
+        self.partial_result = [
             {
                 'housemate': partial_result[1],
                 'partial': housemate_partial_one,
@@ -71,10 +80,10 @@ class BigBrotherBrasil:
         msg = (
             f'A @Splash_UOL está com as seguintes parciais para a Enquete do #BBB23 '
             '"Quem você quer eliminar no Paredão?"\n\n'
+            f'{self.partial_result[0]["housemate"]}: {self.partial_result[0]["partial"]}%\n'
             f'{self.partial_result[1]["housemate"]}: {self.partial_result[1]["partial"]}%\n'
             f'{self.partial_result[2]["housemate"]}: {self.partial_result[2]["partial"]}%\n'
-            f'{self.partial_result[3]["housemate"]}: {self.partial_result[3]["partial"]}%\n'
-            f'Total de Votos: {self.partial_result[0]["total"]}\n\n'
+            f'Total de Votos: {self.datetime_and_poll_info[0]["total"]}\n\n'
             f'{self.poll_number}º paredão do Big Brother Brasil 23\n'
             f'Atualizado em '
             f'{self.now["today"][2]}/{self.now["today"][1]}/{self.now["today"][0]} às '
@@ -83,12 +92,17 @@ class BigBrotherBrasil:
         tweet = Twitter(msg=msg)
         response = tweet.post()
 
+        partial_result_sorted = sorted(
+            self.partial_result,
+            key=lambda d: d['partial'],
+            reverse=True)
+
         list_to_log = [
-            { 
-                'partial_result': self.partial_result,
+            {
+                'partial_result': partial_result_sorted,
                 'poll_number': self.poll_number,
                 'url': self.url,
-                'now': self.now['datetime'],
+                'datetime': self.datetime_and_poll_info,
                 'response': response
             }
         ]
