@@ -17,24 +17,34 @@ def main(request):
         call_headers = {}
 
         for header in request.headers:
-            call_headers[header[0]] = header[1]
+            key = header[0]
+            value = header[1]
+
+            if key == 'Tweet':
+                call_headers[key] = bool(int(value))
+            elif key == 'Pollindex':
+                call_headers[key] = int(value)
+            else:
+                call_headers[key] = value
 
         is_valid_call = Helpers.is_google_apps_script_project_call(call_headers)
 
         if is_valid_call:
             print(f'Valid Call: {is_valid_call}')
 
-            index = 2
-            sources = Sources(index=index)
+            sources = Sources(index=call_headers['Pollindex'])
             sources.compose_splash_uol_url()
 
             bbb = BigBrotherBrasil(
                 url=sources.url,
-                poll_number=index)
+                poll_number=call_headers['Pollindex'])
 
             bbb.extract_and_transform_data()
-            response = bbb.create_tweet()
-            return (response, 200)
+
+            if call_headers['Tweet']:
+                bbb.create_tweet()
+
+            return (bbb.list_to_log, 200)
 
         else:
             msg = 'Unauthorized'

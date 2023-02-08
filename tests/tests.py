@@ -2,16 +2,15 @@
 Module tests
 '''
 
+
 import requests
 
-
-LOCALHOST = 'http://127.0.0.1:8080'
+LOCALHOST = ''
 
 response = requests.get(
     url=LOCALHOST,
-    headers={
-        'projectUUID' : '123465'
-    })
+    timeout=10,
+    headers={})
 
 log = {
     'status_code': response.status_code,

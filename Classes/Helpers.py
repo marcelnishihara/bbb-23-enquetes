@@ -12,7 +12,7 @@ class Helpers:
     @staticmethod
     def get_datetime() -> None:
         date = datetime.now(tz=timezone(zone='Brazil/East'))
-        
+
         today = [
             date.year,
             date.month,
@@ -58,7 +58,7 @@ class Helpers:
         project_uuid = os.environ['PROJECT_UUID']
         is_uuid_valid = headers['Projectuuid'] == project_uuid
         is_valid_call = True if is_uuid_valid else False
-        
+
         headers['Projectuuid'] = (
             f'{headers["Projectuuid"][0:4]}'
             '***'

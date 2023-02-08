@@ -2,7 +2,6 @@
 Module BigBrotherBrasil
 '''
 
-import json
 import re
 import requests
 
@@ -20,17 +19,18 @@ class BigBrotherBrasil:
         self.poll_number = poll_number
         self.now = Helpers.get_datetime()
         self.partial_result = []
+        self.list_to_log = []
 
 
     def extract_and_transform_data(self) -> None:
-        get_uol_page_data = requests.get(self.url)
+        get_uol_page_data = requests.get(url=self.url, timeout=5)
         partial_result_div_regex = r'<div class=\"partial-result\">.*<\/div>'
 
         class_partial_result = re.findall(
             pattern=partial_result_div_regex,
             string=get_uol_page_data.text)[0]
 
-        partialResultRegex = (
+        partial_result_regex = (
             '^<div class=\"partial-result\">\s<span class=\"perc-value\"\sng'
             '-bind=\".+?\">([0-9]{1,}\,[0-9]{1,})%<\/span>.+?<span class=\"a'
             'nswer-title\">(.+?)<\/span>.+?<div class=\"partial-result\">\s<'
@@ -42,7 +42,7 @@ class BigBrotherBrasil:
             'ng-bind="totalVotes">([0-9]{1,})<\/span>\svotos.+?$')
 
         partial_result = re.findall(
-            pattern=partialResultRegex,
+            pattern=partial_result_regex,
             string=class_partial_result)[0]
 
         housemate_partial_one = float(partial_result[0].replace(',', '.'))
@@ -65,18 +65,29 @@ class BigBrotherBrasil:
             {
                 'housemate': partial_result[3],
                 'partial': housemate_partial_two,
-                'amount': total * (housemate_partial_one / 100)
+                'amount': total * (housemate_partial_two / 100)
             },
             {
                 'housemate': partial_result[5],
                 'partial': housemate_partial_three,
-                'amount': total * (housemate_partial_two / 100)
+                'amount': total * (housemate_partial_three / 100)
             }
         ]
 
+        partial_result_sorted = sorted(
+            self.partial_result,
+            key=lambda d: d['partial'],
+            reverse=True)
+
+        self.list_to_log.append({
+            'partial_result': partial_result_sorted,
+            'poll_number': self.poll_number,
+            'url': self.url,
+            'datetime': self.datetime_and_poll_info
+        })
+
 
     def create_tweet(self) -> None:
-        print(f'\n\n{self.partial_result}\n\n')
         msg = (
             f'A @Splash_UOL está com as seguintes parciais para a Enquete do #BBB23 '
             '"Quem você quer eliminar no Paredão?"\n\n'
@@ -90,23 +101,4 @@ class BigBrotherBrasil:
             f'{self.now["today"][3]}:{self.now["today"][4]}:{self.now["today"][5]}')
 
         tweet = Twitter(msg=msg)
-        response = tweet.post()
-
-        partial_result_sorted = sorted(
-            self.partial_result,
-            key=lambda d: d['partial'],
-            reverse=True)
-
-        list_to_log = [
-            {
-                'partial_result': partial_result_sorted,
-                'poll_number': self.poll_number,
-                'url': self.url,
-                'datetime': self.datetime_and_poll_info,
-                'response': response
-            }
-        ]
-
-        string_to_return = json.dumps(list_to_log)
-        print(string_to_return)
-        return string_to_return
+        self.list_to_log[0]['tweet'] = tweet.post()
