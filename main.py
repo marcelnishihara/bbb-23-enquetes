@@ -2,6 +2,8 @@
 Module Docstring
 '''
 
+
+import json
 import traceback
 
 from classes.big_brother_brasil import BigBrotherBrasil
@@ -44,7 +46,7 @@ def main(request):
             if call_headers['Tweet']:
                 bbb.create_tweet()
 
-            return (bbb.list_to_log, 200)
+            return (json.dumps(obj=bbb.list_to_log), 200)
 
         else:
             msg = 'Unauthorized'
