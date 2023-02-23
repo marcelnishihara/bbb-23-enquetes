@@ -1,32 +1,48 @@
 '''
 '''
 
-from classes.helpers import Helpers
+import json
+import os
+import requests
 
 
 class Sources:
     def __init__(
         self,
-        index: int,
-        source: str = 'splash',
-        path: str = './sources/sources.json'
+        poll: int,
+        sources_json_file_path: str = '/bbb-23-enquetes/sources.json',
+        source_web_page: str = 'splash',
         ) -> None:
+        self.__poll = poll
+        self.__sources_json_file_path = sources_json_file_path
+        self.__source_web_page = source_web_page
+
+        self.__sources = { 'splash': 0 }
+        self.__sources_json_file_content = []
+
         self.url = ''
-        self.source = source
-        self.index = index
-
-        sources_file_read = Helpers.read_file(path=path)
-        print(f'File reading response: {sources_file_read}')
-        self.sources = sources_file_read['data']
 
 
-    def compose_splash_uol_url(self) -> None:
-        site = { 'splash': 0 }
+    def __get_sources_json_file(self) -> None:
+        sources_json_file_url = (
+            f'{os.environ["SOURCES_JSON_FILE_URL_BASE"]}'
+            f'{self.__sources_json_file_path}')
 
-        if self.source == 'splash':
-            self.url = (
-                f'{self.sources[site["splash"]]["url_base"]}'
-                f'{self.sources[site["splash"]]["polls"][self.index]["date"]}'
-                f'{self.sources[site["splash"]]["polls"][self.index]["html"]}')
+        response = requests.get(
+            url=sources_json_file_url,
+            timeout=10)
 
-        print(self.url)
+        self.__sources_json_file_content = json.loads(s=response.text)
+
+
+    def compose_url(self) -> None:
+        self.__get_sources_json_file()
+
+        if self.__source_web_page in self.__sources:
+            json_file_content = self.__sources_json_file_content
+            index = self.__sources[self.__source_web_page]
+
+            self.url += (
+                f'{json_file_content[index]["url_base"]}'
+                f'{json_file_content[index]["polls"][self.__poll]["date"]}'
+                f'{json_file_content[index]["polls"][self.__poll]["html"]}')
