@@ -1,5 +1,6 @@
 '''
 '''
+
 import os
 import tweepy
 
@@ -24,10 +25,9 @@ class Twitter:
             housemate_partial = str(housemate["partial"]).replace('.', ',')
 
             self.msg += (
-                f'{index + 1}º {housemate["housemate"]}: '
-                f'{housemate_partial}%\n')
+                f'{index + 1}º {housemate["housemate"]}: {housemate_partial}%'
+                '\n')
 
-        print(f'\n\n\n{self.data}\n\n\n')
         now = self.data['now']['today']
 
         self.msg += (

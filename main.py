@@ -16,30 +16,18 @@ def main(request):
     Function Docstring
     '''
     try:
-        call_headers = {}
+        call_headers = Helpers.is_valid_call(headers_list=request.headers)
 
-        for header in request.headers:
-            key = header[0]
-            value = header[1]
-
-            if key == 'Tweet':
-                call_headers[key] = bool(int(value))
-            elif key == 'Pollindex':
-                call_headers[key] = int(value)
-            else:
-                call_headers[key] = value
-
-        is_valid_call = Helpers.is_google_apps_script_project_call(call_headers)
-
-        if is_valid_call:
-            print(f'Valid Call: {is_valid_call}')
+        if call_headers['is_valid_call']:
+            print(f'Valid Call: {call_headers["is_valid_call"]}')
 
             sources = Sources(index=call_headers['Pollindex'])
             sources.compose_splash_uol_url()
 
             bbb = BigBrotherBrasil(
                 url=sources.url,
-                poll_number=call_headers['Pollindex'])
+                poll_number=call_headers['Pollindex'],
+                housemates_number=call_headers['Housematesnumber'])
 
             bbb.extract_and_transform_data()
 

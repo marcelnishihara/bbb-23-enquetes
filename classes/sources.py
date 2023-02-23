@@ -1,8 +1,6 @@
 '''
 '''
 
-import json
-
 from classes.helpers import Helpers
 
 
@@ -23,14 +21,12 @@ class Sources:
 
 
     def compose_splash_uol_url(self) -> None:
-        indexes = {
-            'splash': 0
-        }
+        site = { 'splash': 0 }
 
         if self.source == 'splash':
             self.url = (
-                f'{self.sources[indexes["splash"]]["url_base"]}'
-                f'{self.sources[indexes["splash"]]["polls"][self.index]["date"]}'
-                f'{self.sources[indexes["splash"]]["polls"][self.index]["html"]}')
+                f'{self.sources[site["splash"]]["url_base"]}'
+                f'{self.sources[site["splash"]]["polls"][self.index]["date"]}'
+                f'{self.sources[site["splash"]]["polls"][self.index]["html"]}')
 
         print(self.url)
