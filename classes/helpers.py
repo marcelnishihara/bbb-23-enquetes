@@ -36,23 +36,6 @@ class Helpers:
 
 
     @staticmethod
-    def log(
-        string_to_log: str, 
-        filename: str,
-        prefix: str = 'log',
-        extension: str = 'json',
-        ) -> None:
-        file = (
-            f'{prefix}_'
-            f'{filename}.'
-            f'{extension}')
-
-        f = open(file=file, mode='w', encoding='utf-8')
-        f.write(string_to_log)
-        f.close()
-
-
-    @staticmethod
     def is_google_apps_script_project_call(headers: dict) -> bool:
         is_valid_call = False
         project_uuid = os.environ['PROJECT_UUID']
@@ -66,3 +49,22 @@ class Helpers:
 
         print(f'Call Headers: {json.dumps(headers)}')
         return is_valid_call
+
+
+    @staticmethod
+    def read_file(
+        path,
+        enconding: str = 'utf-8',
+        is_json: bool = True,
+        ) -> dict:
+        '''
+        static method open_file()
+        '''
+        file_opened = open(
+            file=path,
+            mode='r',
+            encoding=enconding)
+
+        read_data = file_opened.read()
+        data = json.loads(s=read_data) if is_json else read_data
+        return { 'success': True, 'path': path, 'data': data }

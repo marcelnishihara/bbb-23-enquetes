@@ -3,24 +3,23 @@
 
 import json
 
+from classes.helpers import Helpers
+
 
 class Sources:
     def __init__(
-        self, 
+        self,
         index: int,
-        source: str = 'splash'
+        source: str = 'splash',
+        path: str = './sources/sources.json'
         ) -> None:
         self.url = ''
         self.source = source
         self.index = index
 
-        sources_json_file = open(
-            file='./sources/sources.json',
-            mode='r',
-            encoding='utf-8')
-        
-        self.sources = json.loads(s=sources_json_file.read())
-        sources_json_file.close()
+        sources_file_read = Helpers.read_file(path=path)
+        print(f'File reading response: {sources_file_read}')
+        self.sources = sources_file_read['data']
 
 
     def compose_splash_uol_url(self) -> None:
