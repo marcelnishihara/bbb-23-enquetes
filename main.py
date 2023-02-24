@@ -2,7 +2,6 @@
 Module Docstring
 '''
 
-
 import json
 import traceback
 
@@ -23,12 +22,14 @@ def main(request):
 
             sources = Sources(
                 source_web_page=call_headers["Sourcewebpage"],
-                poll=call_headers['Pollindex'])
+                poll=call_headers['Pollindex'],
+                sources_json_file_path=call_headers['Sourcesjsonfile'])
 
             sources.compose_url()
 
             bbb = BigBrotherBrasil(
                 url=sources.url,
+                source_web_page=call_headers["Sourcewebpage"],
                 poll_number=call_headers['Pollindex'],
                 housemates_number=call_headers['Housematesnumber'])
 

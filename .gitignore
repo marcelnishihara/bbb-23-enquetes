@@ -3,4 +3,4 @@ __pycache__
 env
 
 # FILES
-credentials/twitter.ps1
+credentials/_creds.ps1

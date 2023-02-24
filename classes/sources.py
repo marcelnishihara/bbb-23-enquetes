@@ -12,7 +12,7 @@ class Sources:
         self,
         source_web_page: str,
         poll: int,
-        sources_json_file_path: str = '/bbb-23-enquetes/sources.json'
+        sources_json_file_path: str
         ) -> None:
         self.__source_web_page = source_web_page
         self.__poll = poll

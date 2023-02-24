@@ -10,7 +10,16 @@ LOCALHOST = ''
 response = requests.get(
     url=LOCALHOST,
     timeout=10,
-    headers={})
+    headers={
+        'projectUUID': '',
+        'tweet': '',
+        'pollIndex': '',
+        'housematesNumber': '',
+        'sourceWebPage': '',
+        'sourcesJsonFile': ''})
 
-log = { 'status_code': response.status_code, 'text': response.text }
+log = {
+    'status_code': response.status_code, 
+    'text': json.loads(s=response.text)}
+
 print(json.dumps(obj=log, indent=4))

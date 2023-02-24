@@ -16,9 +16,11 @@ class BigBrotherBrasil:
 
     def __init__(self,
         url: str,
+        source_web_page: str,
         poll_number: int,
-        housemates_number: int = 3) -> None:
+        housemates_number: int) -> None:
         self.url = url
+        self.source_web_page = source_web_page
         self.poll_number = poll_number
         self.housemates_number = housemates_number
         self.now = Helpers.get_datetime()
@@ -31,6 +33,10 @@ class BigBrotherBrasil:
 
         regexp = self.__compose_regexp(
             housemates_number=self.housemates_number)
+
+        question = re.findall(
+            pattern=regexp['data']['question'],
+            string=get_uol_page_data.text)[0].strip()
 
         class_partial_result = re.findall(
             pattern=regexp['data']['partial_result_div'],
@@ -60,16 +66,17 @@ class BigBrotherBrasil:
             reverse=True)
 
         self.list_to_log.append({
-            'partial_result': self.partial_result,
-            'url': self.url,
             'now': self.now,
-            'total': total,
-            'poll_number': self.poll_number})
+            'url': self.url,
+            'source_web_page': self.source_web_page,
+            'poll_number': self.poll_number,
+            'question': question,
+            'partial_result': self.partial_result,
+            'total': total})
 
 
     def create_tweet(self) -> None:
         tweet = Twitter(data=self.list_to_log)
-        tweet.compose_msg()
         self.list_to_log[0]['tweet'] = tweet.post()
 
 
