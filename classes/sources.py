@@ -7,17 +7,18 @@ import requests
 
 
 class Sources:
+
     def __init__(
         self,
+        source_web_page: str,
         poll: int,
-        sources_json_file_path: str = '/bbb-23-enquetes/sources.json',
-        source_web_page: str = 'splash',
+        sources_json_file_path: str = '/bbb-23-enquetes/sources.json'
         ) -> None:
+        self.__source_web_page = source_web_page
         self.__poll = poll
         self.__sources_json_file_path = sources_json_file_path
-        self.__source_web_page = source_web_page
 
-        self.__sources = { 'splash': 0 }
+        self.__sources = { 'splash': 0, 'splash_filler': 1 }
         self.__sources_json_file_content = []
 
         self.url = ''

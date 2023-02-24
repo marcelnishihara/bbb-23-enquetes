@@ -9,6 +9,7 @@ from pytz import timezone
 
 
 class Helpers:
+
     @staticmethod
     def get_datetime() -> None:
         date = datetime.now(tz=timezone(zone='Brazil/East'))

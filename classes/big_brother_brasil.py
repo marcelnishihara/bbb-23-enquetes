@@ -13,6 +13,7 @@ class BigBrotherBrasil:
     '''
     Class BigBrotherBrasil
     '''
+
     def __init__(self,
         url: str,
         poll_number: int,

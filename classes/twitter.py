@@ -6,6 +6,7 @@ import tweepy
 
 
 class Twitter:
+
     def __init__(self, data: list) -> None:
         self.msg = ''
         self.data = data[0]

@@ -21,7 +21,10 @@ def main(request):
         if call_headers['is_valid_call']:
             print(f'Valid Call: {call_headers["is_valid_call"]}')
 
-            sources = Sources(poll=call_headers['Pollindex'])
+            sources = Sources(
+                source_web_page=call_headers["Sourcewebpage"],
+                poll=call_headers['Pollindex'])
+
             sources.compose_url()
 
             bbb = BigBrotherBrasil(
