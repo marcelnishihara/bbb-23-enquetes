@@ -4,3 +4,4 @@ env
 
 # FILES
 credentials/_creds.ps1
+sources/sources.json

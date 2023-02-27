@@ -34,7 +34,6 @@ class Twitter:
 
         if self.data['source_web_page'] == 'splash':
             self.msg += (
-                '\n'
                 f'{self.data["poll_number"]}º paredão do '
                 'Big Brother Brasil 23\n')
 
