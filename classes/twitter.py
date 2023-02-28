@@ -6,6 +6,8 @@ import tweepy
 
 
 class Twitter:
+    '''Class Twitter
+    '''
 
     def __init__(self, data: list) -> None:
         self.msg = ''
@@ -18,6 +20,8 @@ class Twitter:
 
 
     def __compose_msg(self) -> None:
+        '''Method __compose_msg
+        '''
         self.msg = (
             'A @Splash_UOL está com as seguintes parciais para a Enquete do #B'
             f'BB23 "{self.data["question"]}"\n\n')
@@ -42,6 +46,8 @@ class Twitter:
 
 
     def post(self) -> dict:
+        '''Method post
+        '''
         self.__compose_msg()
         response = self.__client.create_tweet(text=self.msg)
         return response.data

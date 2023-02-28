@@ -9,9 +9,13 @@ from pytz import timezone
 
 
 class Helpers:
+    '''Class Helpers
+    '''
 
     @staticmethod
     def get_datetime() -> None:
+        '''Static get_datetime
+        '''
         date = datetime.now(tz=timezone(zone='Brazil/East'))
 
         today = [
@@ -42,8 +46,7 @@ class Helpers:
         enconding: str = 'utf-8',
         is_json: bool = True,
         ) -> dict:
-        '''
-        static method open_file()
+        '''Static method read_file
         '''
         file_opened = open(
             file=path,
@@ -57,6 +60,8 @@ class Helpers:
 
     @staticmethod
     def create_headers_dict(headers_list: list) -> dict:
+        '''Static method create_headers_dict
+        '''
         headers_dict = {}
 
         for header in headers_list:
@@ -75,6 +80,8 @@ class Helpers:
 
     @staticmethod
     def is_valid_call(headers_list: list) -> dict:
+        '''Static method is_valid_call
+        '''
         headers = Helpers.create_headers_dict(headers_list=headers_list)
         headers['is_valid_call'] = False
 

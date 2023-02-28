@@ -7,6 +7,8 @@ import requests
 
 
 class Sources:
+    '''Class Sources
+    '''
 
     def __init__(
         self,
@@ -25,6 +27,8 @@ class Sources:
 
 
     def __get_sources_json_file(self) -> None:
+        '''Method __get_sources_json_file
+        '''
         sources_json_file_url = (
             f'{os.environ["SOURCES_JSON_FILE_URL_BASE"]}'
             f'{self.__sources_json_file_path}')
@@ -37,6 +41,8 @@ class Sources:
 
 
     def compose_url(self) -> None:
+        '''Method compose_url
+        '''
         self.__get_sources_json_file()
 
         if self.__source_web_page in self.__sources:

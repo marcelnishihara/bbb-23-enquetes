@@ -10,8 +10,7 @@ from classes.twitter import Twitter
 
 
 class BigBrotherBrasil:
-    '''
-    Class BigBrotherBrasil
+    '''Class BigBrotherBrasil
     '''
 
     def __init__(self,
@@ -29,6 +28,8 @@ class BigBrotherBrasil:
 
 
     def extract_and_transform_data(self) -> None:
+        '''
+        '''
         get_uol_page_data = requests.get(url=self.url, timeout=5)
 
         regexp = self.__compose_regexp(
@@ -56,7 +57,7 @@ class BigBrotherBrasil:
                 .replace(',', '.'))
 
             self.partial_result.append({
-                'housemate': partial_result[housemate_index + 1],
+                'housemate': partial_result[housemate_index + 1].strip(),
                 'partial': housemate_partial,
                 'amount': total * (housemate_partial / 100)})
 
@@ -76,14 +77,15 @@ class BigBrotherBrasil:
 
 
     def create_tweet(self) -> None:
+        '''Method create_tweet
+        '''
         tweet = Twitter(data=self.list_to_log)
         self.list_to_log[0]['tweet'] = tweet.post()
 
 
     @staticmethod
     def __compose_regexp(housemates_number: int = 3) -> dict:
-        '''
-        Static method compose_regexp
+        '''Static method compose_regexp
         '''
         sources_file_read = Helpers.read_file(path='./sources/regexp.json')
         partial_result_regex = ''
