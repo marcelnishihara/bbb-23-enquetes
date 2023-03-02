@@ -28,9 +28,9 @@ class BigBrotherBrasil:
 
 
     def extract_and_transform_data(self) -> None:
+        '''Method extract_and_transform_data
         '''
-        '''
-        get_uol_page_data = requests.get(url=self.url, timeout=5)
+        get_uol_page_data = requests.get(url=self.url, timeout=10)
 
         regexp = self.__compose_regexp(
             housemates_number=self.housemates_number)
@@ -76,11 +76,11 @@ class BigBrotherBrasil:
             'total': total})
 
 
-    def create_tweet(self) -> None:
+    def create_tweet(self, counter_limit: int) -> None:
         '''Method create_tweet
         '''
         tweet = Twitter(data=self.list_to_log)
-        self.list_to_log[0]['tweet'] = tweet.post()
+        self.list_to_log[0]['tweet'] = tweet.post(counter_limit=counter_limit)
 
 
     @staticmethod

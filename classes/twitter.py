@@ -19,21 +19,32 @@ class Twitter:
             access_token_secret=os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
 
 
-    def __compose_msg(self) -> None:
+    def __compose_msg(self, counter_limit: int) -> None:
         '''Method __compose_msg
         '''
         self.msg = (
             'A @Splash_UOL está com as seguintes parciais para a Enquete do #B'
             f'BB23 "{self.data["question"]}"\n\n')
 
-        for index, housemate in enumerate(self.data['partial_result']):
+        counter = 0
+        three_firsts_sum = 0
+
+        while counter < counter_limit:
+            housemate = self.data['partial_result'][counter]
             housemate_partial = str(housemate["partial"]).replace('.', ',')
+            three_firsts_sum += housemate["partial"]
 
             self.msg += (
-                f'{index + 1}º {housemate["housemate"]}: {housemate_partial}%'
-                '\n')
+                f'{counter + 1}º {housemate["housemate"]}: '
+                f'{housemate_partial}%\n')
 
-        now = self.data['now']['today']
+            counter += 1
+
+        if self.data['source_web_page'] == 'splash_filler':
+            other_housemates = format((100 - three_firsts_sum), '.2f')
+            other_housemates = str(other_housemates).replace('.', ',')
+            self.msg += f'Os demais somam {other_housemates}%\n'
+
         self.msg += f'\nTotal de Votos: {self.data["total"]}\n'
 
         if self.data['source_web_page'] == 'splash':
@@ -41,13 +52,15 @@ class Twitter:
                 f'{self.data["poll_number"]}º paredão do '
                 'Big Brother Brasil 23\n')
 
+        now = self.data['now']['today']
+
         self.msg += ('\n🕒 '
             f'{now[2]}/{now[1]}/{now[0]} às {now[3]}:{now[4]}:{now[5]}')
 
 
-    def post(self) -> dict:
+    def post(self, counter_limit: int) -> dict:
         '''Method post
         '''
-        self.__compose_msg()
+        self.__compose_msg(counter_limit=counter_limit)
         response = self.__client.create_tweet(text=self.msg)
         return response.data

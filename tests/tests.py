@@ -15,6 +15,7 @@ response = requests.get(
         'tweet': '',
         'pollIndex': '',
         'housematesNumber': '',
+        'counterLimit': '',
         'sourceWebPage': '',
         'sourcesJsonFile': ''})
 

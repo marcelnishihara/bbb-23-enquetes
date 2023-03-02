@@ -70,10 +70,14 @@ class Helpers:
 
             if key == 'Tweet':
                 headers_dict[key] = bool(int(value))
-            elif key == 'Pollindex' or key == 'Housematesnumber':
+            elif key == 'Pollindex' or key == 'Housematesnumber' \
+                or key == 'Counterlimit':
                 headers_dict[key] = int(value)
             else:
                 headers_dict[key] = value
+
+        if headers_dict['Counterlimit'] == 0:
+            headers_dict['Counterlimit'] = headers_dict['Housematesnumber']
 
         return headers_dict
 

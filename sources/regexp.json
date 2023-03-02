@@ -1,6 +1,6 @@
 {
-    "_comment": "This is a comment",
-    "question": "<i class=.*>ENQUETE\\sUOL\\sBBB\\s23:(.+?)</i>",
+    "__comment": "This is a comment",
+    "question": "<i class=.*>ENQUETE\\sUOL\\sBBB\\s23:(.+?)<\/i>",
     "partial_result_div": "<div class=\"partial-result\">.*<\/div>",
     "housemate_data": "<div class=\"partial-result\">\\s<span class=\"perc-value\"\\sng-bind=\".+?\">([0-9]{1,}\\,[0-9]{1,})%<\/span>.+?<span class=\"answer-title\">(.+?)<\/span>",
     "total": "Total\\sde\\s<span class=\"total-votes\"\\sng-bind=\"totalVotes\">([0-9]{1,})<\/span>\\svotos.+?"
