@@ -19,7 +19,7 @@ class Twitter:
             access_token_secret=os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
 
 
-    def __compose_msg(self, counter_limit: int) -> None:
+    def __compose_msg(self, housemates_number:int, counter_limit: int) -> None:
         '''Method __compose_msg
         '''
         self.msg = (
@@ -27,12 +27,12 @@ class Twitter:
             f'BB23 "{self.data["question"]}"\n\n')
 
         counter = 0
-        three_firsts_sum = 0
+        firsts_housemates_sum = 0
 
         while counter < counter_limit:
             housemate = self.data['partial_result'][counter]
             housemate_partial = str(housemate["partial"]).replace('.', ',')
-            three_firsts_sum += housemate["partial"]
+            firsts_housemates_sum += housemate["partial"]
 
             self.msg += (
                 f'{counter + 1}º {housemate["housemate"]}: '
@@ -40,10 +40,11 @@ class Twitter:
 
             counter += 1
 
-        if self.data['source_web_page'] == 'splash_filler':
-            other_housemates = format((100 - three_firsts_sum), '.2f')
+        if self.data['source_web_page'] == 'splash_filler' and \
+            housemates_number > 3:
+            other_housemates = format((100 - firsts_housemates_sum), '.2f')
             other_housemates = str(other_housemates).replace('.', ',')
-            self.msg += f'Os demais somam {other_housemates}%\n'
+            self.msg += f'O restante soma {other_housemates}%\n'
 
         self.msg += f'\nTotal de Votos: {self.data["total"]}\n'
 
@@ -58,9 +59,12 @@ class Twitter:
             f'{now[2]}/{now[1]}/{now[0]} às {now[3]}:{now[4]}:{now[5]}')
 
 
-    def post(self, counter_limit: int) -> dict:
+    def post(self, housemates_number: int, counter_limit: int) -> dict:
         '''Method post
         '''
-        self.__compose_msg(counter_limit=counter_limit)
+        self.__compose_msg(
+            housemates_number=housemates_number,
+            counter_limit=counter_limit)
+
         response = self.__client.create_tweet(text=self.msg)
         return response.data

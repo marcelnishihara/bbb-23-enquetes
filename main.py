@@ -36,7 +36,9 @@ def main(request):
             bbb.extract_and_transform_data()
 
             if call_headers['Tweet']:
-                bbb.create_tweet(counter_limit = call_headers["Counterlimit"])
+                bbb.create_tweet(
+                    housemates_number = call_headers['Housematesnumber'],
+                    counter_limit = call_headers["Counterlimit"])
 
             return (json.dumps(obj=bbb.list_to_log), 200)
 

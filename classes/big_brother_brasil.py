@@ -76,11 +76,13 @@ class BigBrotherBrasil:
             'total': total})
 
 
-    def create_tweet(self, counter_limit: int) -> None:
+    def create_tweet(self, housemates_number: int, counter_limit: int) -> None:
         '''Method create_tweet
         '''
         tweet = Twitter(data=self.list_to_log)
-        self.list_to_log[0]['tweet'] = tweet.post(counter_limit=counter_limit)
+        self.list_to_log[0]['tweet'] = tweet.post(
+            housemates_number=housemates_number,
+            counter_limit=counter_limit)
 
 
     @staticmethod
