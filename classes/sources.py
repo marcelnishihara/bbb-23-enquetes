@@ -30,8 +30,10 @@ class Sources:
         '''Method __get_sources_json_file
         '''
         sources_json_file_url = (
-            f'{os.environ["SOURCES_JSON_FILE_URL_BASE"]}'
+            f'{os.environ["SOURCES_JSON_FILE_URL_BASE"]}/'
             f'{self.__sources_json_file_path}')
+
+        print(f'Source: {sources_json_file_url}')
 
         response = requests.get(
             url=sources_json_file_url,

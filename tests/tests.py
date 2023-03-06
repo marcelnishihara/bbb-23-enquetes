@@ -17,7 +17,8 @@ response = requests.get(
         'housematesNumber': '',
         'counterLimit': '',
         'sourceWebPage': '',
-        'sourcesJsonFile': ''})
+        'sourcesJsonFile': ''
+      })
 
 log = {
     'status_code': response.status_code, 
